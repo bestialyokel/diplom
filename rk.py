@@ -10,7 +10,7 @@ C = 0.1
 N = 10
 
 U0 = 2.5
-I0 = 1.5
+I0 = 0.04
 
 def yD(x, y, z):
     return (U0 - R*y - z)/L
