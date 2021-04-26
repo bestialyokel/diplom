@@ -1,8 +1,8 @@
 import matplotlib.pyplot as plt
 
-L = 25
-R = 1
-C = 0.1
+L = 250
+R = 10
+C = 1
 
 #seems legit
 
