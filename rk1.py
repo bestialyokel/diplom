@@ -4,6 +4,8 @@ L = 250
 R = 10
 C = 1
 
+N = 10
+
 #seems legit
 
 def UinFunc(t):
@@ -17,15 +19,19 @@ def IinFunc(t):
     return 1
 
 def f(Uin, y, z):
-    return ( Uin - R*y - z ) / L
+    return ( Uin - R * y - z ) / L
 
 def g(Iin, y, z):
-    return ( y - Iin ) / C
+    return ( y - Iin ) / (C)
 
-y0 = IinFunc(0)
-z0 = UinFunc(0)
 
-y1 = z1 = 0
+y0 = y1 = z0 = z1 = 0
+
+
+#?
+
+y0 = 1
+z0 = 2
 
 x0 = 0
 X = 1000
@@ -49,19 +55,20 @@ while (x0 < X):
     k4 = h * f(UinFunc(x0 + h), y0 + q3, z0 + k3)
     q4 = h * g(IinFunc(x0 + h), y0 + q3, z0 + k3)
 
-    y1 = y0 + (k1 + 2*k2 + 2*k3 + k4)/6
-    z1 = z0 + (q1 + 2*q2 + 2*q3 + q4)/6
+    y1 = y0
+    z1 = z0
+
+    y0 = y0 + (k1 + 2*k2 + 2*k3 + k4)/6
+    z0 = z0 + (q1 + 2*q2 + 2*q3 + q4)/6
 
     xArr.append(x0)
     yArr.append(y0)
     zArr.append(z0)
 
     x0 += h
-    y0 = y1
-    z0 = z1
 
 
-plt.plot(xArr, yArr, 'r')
+#plt.plot(xArr, yArr, 'r')
 plt.plot(xArr, zArr, 'g')
 plt.show()
 #
