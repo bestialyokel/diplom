@@ -6,33 +6,38 @@
 using namespace std;
 
 typedef struct {
-   float R;
-   float L;
-   float C;
+   double R;
+   double L;
+   double C;
 } RLC;
 
 
 typedef struct {
-    float T;
-    float tau;
+    double T;
+    double tau;
 } TimeOptions;
 
-template<int N>
+
 class Machine {
+    int N;
     RLC lineOptions;
     TimeOptions timeOptions;
 
-    array<float, N> I_L;
-    array<float, N> U_C;
+    //I_L && U_C
+    vector<double> U0;
+    vector<double> I0;
 
-    vector<float> U0;
 
-    vector<float> I0;
 
     public:
-    Machine(const RLC& lineOptions, const TimeOptions& timeOptions)
+    Machine(int amount, const RLC& lineOptions, const TimeOptions& timeOptions)
         : lineOptions(lineOptions),
-          timeOptions(timeOptions) {}
+          timeOptions(timeOptions),
+          N(amount)
+        {
+        I0.reserve(N);
+        U0.reserve(N);
+    }
 
         void append(vector<float>&& U,  vector<float>&& I) {
             U0 = U;

@@ -9,6 +9,13 @@ t0 = 0
 T = 1000
 tau = 1
 
+def f(Uin, y, z):
+    return ( Uin - (R/N) * y - z ) / (N/L)
+
+def g(Iout, y, z):
+    return ( y - Iout ) / (N/C)
+    
+
 tCount = int(T/tau)
 
 U0 = [0] * tCount
@@ -26,6 +33,9 @@ for i in range(tCount):
         I0[i] = 1
 
 
+
+
+
 # y = I_L, z = U_C, x == time
 #y' = (U_in - R * y - z)/L = f(x,y,z)
 #z' = (y - I_in)/C = g(x,y,z)
@@ -33,8 +43,9 @@ for i in range(tCount):
 def f(Uin, y, z):
     return ( Uin - (R/N) * y - z ) / (N/L)
 
-def g(Iin, y, z):
-    return ( y - Iin ) / (N/C)
+def g(Iout, y, z):
+    return ( y - Iout ) / (N/C)
+
 
 
 
