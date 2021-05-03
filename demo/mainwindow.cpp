@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
+#include <QPushButton>
 #include "qcustomplot.h"
 
 #include "types.h"
@@ -10,6 +11,8 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
+    ui->setupUi(this);
+
     double tau = 1;
     double T = 1000;
 
@@ -42,21 +45,19 @@ MainWindow::MainWindow(QWidget *parent)
         }
     }
 
-    Machine m(10, rlc);
+    Machine m(20, rlc);
 
     m.appendPayload(p);
     m.init(p.U[0], p.I[0]);
 
     Payload last = m.processNextPayload();
 
-    for (int i =0 ;i < tCount; i++) {
-        cout << last.U[i] << ":" << last.I[i] << endl;
+    for (auto x : last.U) {
+        cout << x << endl;
     }
 
-    QCustomPlot* customPlot = new QCustomPlot();
-    QVBoxLayout *layout = new QVBoxLayout;
-    layout->addWidget(customPlot);
-    setLayout(layout);
+    QCustomPlot* customPlot = findChild<QCustomPlot*>("plot");
+
     QVector<double> x(tCount), y(tCount);
     for (int i=0; i<tCount; ++i)
     {
@@ -69,7 +70,10 @@ MainWindow::MainWindow(QWidget *parent)
     customPlot->xAxis->setLabel("x");
     customPlot->yAxis->setLabel("y");
 
-    ui->setupUi(this);
+    customPlot->xAxis->setRange(0, 1000);
+    customPlot->yAxis->setRange(0, 15);
+
+
 }
 
 MainWindow::~MainWindow()

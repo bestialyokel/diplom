@@ -13,8 +13,8 @@ using namespace Eigen;
 void Machine::init(double U_in, double I_out) {
     const int l = 2*N;
 
-    MatrixXd A(l, l);
-    VectorXd b(l);
+    MatrixXd A = MatrixXd::Zero(l, l);
+    VectorXd b = VectorXd::Zero(l);
 
     b(0) = U_in;
     b(l - 1) = I_out;
@@ -25,6 +25,7 @@ void Machine::init(double U_in, double I_out) {
 
     if (N > 1) {
         A(1,2) = -1;
+
         A(l-2, l-3) = 1;
         A(l-2, l-2) = -RN;
         A(l-2, l-1) = -1;
@@ -61,7 +62,7 @@ auto Machine::f(double Uin, double y, double z) {
 }
 
 auto Machine::g(double Iout, double y, double z) {
-    return (y - Iout)/ NC;
+    return (y - Iout) / NC;
 }
 
 Payload Machine::processNextPayload() {
