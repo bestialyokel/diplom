@@ -69,20 +69,24 @@ auto Machine::g(double Iout, double y, double z) {
 }
 
 //returns pair <I0, U0>
-auto Machine::iterRK(double h, double Uin, double Iout, double U0, double I0) {
+auto Machine::iterRK(double h, double Uin, double Iout, double Uin_1, double Iout_1, double U0, double I0) {
     double k1,k2,k3,k4,q1,q2,q3,q4;
 
     k1 = f(Uin, I0, U0);
     q1 = g(Iout, I0, U0);
 
-    k2 = f(Uin, I0 + k1/2.0, U0 + q1/2.0);
-    q2 = g(Iout, I0 + k1/2.0, U0 + q1/2.0);
+    //+h/2?
+    double avgU = (Uin+Uin_1)/2;
+    double avgI = (Iout+Iout_1)/2;
 
-    k3 = f(Uin, I0 + k2/2.0, U0 + q2/2.0);
-    q3 = g(Iout, I0 + k2/2.0, U0 + q2/2.0);
+    k2 = f(avgU, I0 + k1/2.0, U0 + q1/2.0);
+    q2 = g(avgI, I0 + k1/2.0, U0 + q1/2.0);
 
-    k4 = f(Uin, I0 + k3, U0 + q3);
-    q4 = g(Iout, I0 + k3, U0 + q3);
+    k3 = f(avgU, I0 + k2/2.0, U0 + q2/2.0);
+    q3 = g(avgI, I0 + k2/2.0, U0 + q2/2.0);
+
+    k4 = f(Uin_1, I0 + k3, U0 + q3);
+    q4 = g(Iout_1, I0 + k3, U0 + q3);
 
     I0 = I0 + h*(k1 + 2*k2 + 2*k3 + k4)/6;
     U0 = U0 + h*(q1 + 2*q2 + 2*q3 + q4)/6;
@@ -97,8 +101,6 @@ Payload Machine::processNextPayload() {
 
     auto [I0, U0] = initState(pl.U[0], pl.I[0]);
 
-    /*
-
     vector<vector<double>> U = vector<vector<double>>(N+1);
     vector<vector<double>> I = vector<vector<double>>(N+1);
 
@@ -107,19 +109,31 @@ Payload Machine::processNextPayload() {
         U[i+1] = vector<double>(l);
         I[i] = vector<double>(l);
 
-        U[i+1][0] = U0[i];
-        I[i][0] = I0[i];
+        for (int j = 0; j < l; j++) {
+            U[i+1][j] = U0[i];
+            I[i][j] = I0[i];
+        }
     }
     I[N] = pl.I;
-    */
 
+    /*
     vector<double> I_L, U_C;
     I_L = vector<double>(l);
     U_C = vector<double>(l);
+    */
 
     double h = pl.tau;
 
-    for (int i = 0; i < l; i++) {
+    //U[0] - U_in(t)
+    //I[N] - I_out(t)
+    for (int i = 0; i < l - 1; i++) {
+        for (int j = 0; j < N; j++) {
+            //(double h, double Uin, double Iout, double Uin_1, double Iout_1, double U0, double I0)
+            auto [y0, z0] = iterRK(h, U[j][i], I[j+1][i], U[j][i+1], I[j+1][i+1], U[j+1][i], I[j][i]);
+            U[j+1][i] = z0;
+            I[j][i] = y0;
+        }
+        /*
         auto [y0, z0] = iterRK(h, pl.U[i], I0[1], U0[0], I0[0]);
         U0[0] = z0;
         I0[0] = y0;
@@ -133,10 +147,11 @@ Payload Machine::processNextPayload() {
         I0[N-1] = y1;
         I_L[i] = y1;
         U_C[i] = z1;
+        */
     }
 
-    res.I = I_L;
-    res.U = U_C;
+    res.I = U[N];
+    res.U = I[N-1];
 
     return res;
 }

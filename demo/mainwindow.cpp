@@ -80,8 +80,8 @@ MainWindow::MainWindow(QWidget *parent)
     customPlot->yAxis->setLabel("y");
 
     customPlot->xAxis->setRange(0, T);
-    customPlot->yAxis->setRange(0, 12);
-
+    //customPlot->yAxis->setRange(-500, 500);
+    customPlot->yAxis->setRange(0, 15);
 }
 
 MainWindow::~MainWindow()
