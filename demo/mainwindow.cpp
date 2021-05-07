@@ -7,6 +7,9 @@
 #include "types.h"
 #include "machine.h"
 
+extern int N;
+extern double step;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -15,7 +18,6 @@ MainWindow::MainWindow(QWidget *parent)
 
     double tau = 1;
     double T = 1000;
-
     int tCount = (T/tau);
 
     Payload p;
@@ -27,52 +29,58 @@ MainWindow::MainWindow(QWidget *parent)
 
     p.tau = tau;
 
+
     p.I = vector<double>(tCount);
     p.U = vector<double>(tCount);
 
-    for (int i = 0; i < tCount; i++) {
-        const double t = i*tau;
-        if (t > 100) {
+    double i = 0;
+    while (i < tCount) {
+        double x = i/tCount;
+        if (x > 0.1) {
             p.U[i] = 12.5;
         } else {
             p.U[i] = 12;
         }
 
-        if (t > 500) {
+        if (x > 0.5) {
             p.I[i] = 0.5;
         } else {
             p.I[i] = 1;
         }
+        i = i+1;
     }
 
-    Machine m(20, rlc);
+    Machine m(10, rlc);
 
     m.appendPayload(p);
-    m.init(p.U[0], p.I[0]);
 
     Payload last = m.processNextPayload();
 
+
     for (auto x : last.U) {
-        cout << x << endl;
+        //cout << x << endl;
     }
+
 
     QCustomPlot* customPlot = findChild<QCustomPlot*>("plot");
 
-    QVector<double> x(tCount), y(tCount);
+    QVector<double> x(tCount), U(tCount), I(tCount);
     for (int i=0; i<tCount; ++i)
     {
-      x[i] = i; // x goes from -1 to 1
-      y[i] = last.U[i]; // let's plot a quadratic function
+      x[i] = i*tau; // x goes from -1 to 1
+      I[i] = last.I[i]; // let's plot a quadratic function
+      U[i] = last.U[i]; // let's plot a quadratic function
     }
     customPlot->addGraph();
-    customPlot->graph(0)->setData(x, y);
+    customPlot->addGraph();
+    customPlot->graph(0)->setData(x, U);
+    customPlot->graph(1)->setData(x, I);
     // give the axes some labels:
     customPlot->xAxis->setLabel("x");
     customPlot->yAxis->setLabel("y");
 
-    customPlot->xAxis->setRange(0, 1000);
-    customPlot->yAxis->setRange(0, 15);
-
+    customPlot->xAxis->setRange(0, T);
+    customPlot->yAxis->setRange(0, 12);
 
 }
 

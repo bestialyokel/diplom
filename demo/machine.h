@@ -20,22 +20,20 @@ class Machine {
 
     Payload pl;
 
-    public:
-        vector<double> y0;
-        vector<double> z0;
 
-        void init(double U_in, double I_out);
+    auto initState(double U_in, double I_out);
+    auto f(double Uin, double y, double z);
+    auto g(double Iout, double y, double z);
+    auto iterRK(double h, double Uin, double Iout, double U0, double I0);
+
+    public:
 
         void appendPayload(const Payload& p);
 
-        auto f(double Uin, double y, double z);
-
-        auto g(double Iout, double y, double z);
-
         Payload processNextPayload();
 
-    public:
-    Machine(int amount, const RLC& lOptions);
+        Machine(int amount, const RLC& lOptions);
+        ~Machine();
 };
 
 #endif // MACHINE_H
