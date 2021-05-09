@@ -16,7 +16,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    double tau = 1;
+    double tau = step;
+    if (tau == 0) {
+        tau = 0.04;
+    }
+
     double T = 1000;
     int tCount = (T/tau);
 
@@ -50,17 +54,14 @@ MainWindow::MainWindow(QWidget *parent)
         i = i+1;
     }
 
-    Machine m(10, rlc);
+    if (N == 0) {
+        N=500;
+    }
+    Machine m(N, rlc);
 
     m.appendPayload(p);
 
     Payload last = m.processNextPayload();
-
-
-    for (auto x : last.U) {
-        //cout << x << endl;
-    }
-
 
     QCustomPlot* customPlot = findChild<QCustomPlot*>("plot");
 
@@ -79,9 +80,8 @@ MainWindow::MainWindow(QWidget *parent)
     customPlot->xAxis->setLabel("x");
     customPlot->yAxis->setLabel("y");
 
-    customPlot->xAxis->setRange(0, T);
-    //customPlot->yAxis->setRange(-500, 500);
-    customPlot->yAxis->setRange(0, 15);
+    customPlot->xAxis->setRange(0, T-1);
+    customPlot->yAxis->setRange(0,  15);
 }
 
 MainWindow::~MainWindow()

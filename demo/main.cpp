@@ -10,8 +10,10 @@ int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
 
-    //N = atoi(argv[1]);
-    //step = atof(argv[2]);
+    if (argc > 2) {
+        N = atoi(argv[1]);
+        step = atof(argv[2]);
+    }
 
     MainWindow w;
     w.show();

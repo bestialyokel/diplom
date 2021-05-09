@@ -11,6 +11,7 @@ using namespace std;
 using namespace Eigen;
 
 class Machine {
+    typedef vector<double> state_type;
     RLC opt;
     int N;
 
@@ -24,7 +25,8 @@ class Machine {
     auto initState(double U_in, double I_out);
     auto f(double Uin, double y, double z);
     auto g(double Iout, double y, double z);
-    auto iterRK(double h, double Uin, double Iout, double U0, double I0, double Uin_1, double Iout_1);
+
+    auto iter( const state_type &x , state_type &dxdt , double t );
 
     public:
 

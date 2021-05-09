@@ -6,8 +6,13 @@
 #include "types.h"
 #include "machine.h"
 
+#include <boost/array.hpp>
+#include <boost/numeric/odeint.hpp>
+
+
 using namespace std;
 using namespace Eigen;
+using namespace boost::numeric::odeint;
 
 auto Machine::initState(double U_in, double I_out) {
     const int l = 2*N;
@@ -60,99 +65,84 @@ void Machine::appendPayload(const Payload& p) {
     pl.U = p.U;
 }
 
-auto Machine::f(double Uin, double y, double z) {
-    return (Uin - (RN) * y - z) / (NL);
-}
-
-auto Machine::g(double Iout, double y, double z) {
-    return (y - Iout) / NC;
-}
-
-//returns pair <I0, U0>
-auto Machine::iterRK(double h, double Uin, double Iout, double Uin_1, double Iout_1, double U0, double I0) {
-    double k1,k2,k3,k4,q1,q2,q3,q4;
-
-    k1 = f(Uin, I0, U0);
-    q1 = g(Iout, I0, U0);
-
-    //+h/2?
-    double avgU = (Uin+Uin_1)/2;
-    double avgI = (Iout+Iout_1)/2;
-
-    k2 = f(avgU, I0 + k1/2.0, U0 + q1/2.0);
-    q2 = g(avgI, I0 + k1/2.0, U0 + q1/2.0);
-
-    k3 = f(avgU, I0 + k2/2.0, U0 + q2/2.0);
-    q3 = g(avgI, I0 + k2/2.0, U0 + q2/2.0);
-
-    k4 = f(Uin_1, I0 + k3, U0 + q3);
-    q4 = g(Iout_1, I0 + k3, U0 + q3);
-
-    I0 = I0 + h*(k1 + 2*k2 + 2*k3 + k4)/6;
-    U0 = U0 + h*(q1 + 2*q2 + 2*q3 + q4)/6;
-
-    return make_pair(I0, U0);
-}
-
-
 Payload Machine::processNextPayload() {
     Payload res;
-    const int l = min(pl.I.size(), pl.U.size());
 
+    res.tau = pl.tau;
+
+    //initial state for U_in_[i](t=0) I_out_[i](t=0))
     auto [I0, U0] = initState(pl.U[0], pl.I[0]);
 
-    vector<vector<double>> U = vector<vector<double>>(N+1);
-    vector<vector<double>> I = vector<vector<double>>(N+1);
+    //state[2n] - U_in_[i](t=0)
+    //state[2n+1] - I_out_[i](t=0))
+    state_type state = vector<double>(2*N);
+    boost::numeric::odeint::runge_kutta4_classic<state_type> rk;
 
-    U[0] = pl.U;
+    //fill state
     for (int i = 0; i < N; i++) {
-        U[i+1] = vector<double>(l);
-        I[i] = vector<double>(l);
-
-        for (int j = 0; j < l; j++) {
-            U[i+1][j] = U0[i];
-            I[i][j] = I0[i];
-        }
+        const int idx = i*2;
+        state[idx] = I0[i];
+        state[idx+1] = U0[i];
     }
-    I[N] = pl.I;
 
-    /*
-    vector<double> I_L, U_C;
-    I_L = vector<double>(l);
-    U_C = vector<double>(l);
-    */
-
+    auto& U_in = pl.U;
+    auto& I_out = pl.I;
     double h = pl.tau;
 
-    //U[0] - U_in(t)
-    //I[N] - I_out(t)
-    for (int i = 0; i < l - 1; i++) {
-        for (int j = 0; j < N; j++) {
-            //(double h, double Uin, double Iout, double Uin_1, double Iout_1, double U0, double I0)
-            auto [y0, z0] = iterRK(h, U[j][i], I[j+1][i], U[j][i+1], I[j+1][i+1], U[j+1][i], I[j][i]);
-            U[j+1][i] = z0;
-            I[j][i] = y0;
-        }
-        /*
-        auto [y0, z0] = iterRK(h, pl.U[i], I0[1], U0[0], I0[0]);
-        U0[0] = z0;
-        I0[0] = y0;
-        for (int j = 1; j < N-1; j++) {
-            auto [y0, z0] = iterRK(h, U0[j-1], I0[j+1], U0[j], I0[j]);
-            U0[j] = z0;
-            I0[j] = y0;
-        }
-        auto [y1, z1] = iterRK(h, U0[N-2], pl.I[i], U0[N-1], I0[N-1]);
-        U0[N-1] = z1;
-        I0[N-1] = y1;
-        I_L[i] = y1;
-        U_C[i] = z1;
-        */
-    }
+    size_t l = min(U_in.size(), I_out.size());
 
-    res.I = U[N];
-    res.U = I[N-1];
+    vector<double> I_last = vector<double>(l);
+    vector<double> U_last = vector<double>(l);
 
+    size_t i = 0;
+    const int lIdx = N*2 - 1;
+    do {
+        const double t = i*h;
+
+        I_last[i] = state[lIdx-1];
+        U_last[i] = state[lIdx];
+        rk.do_step(
+            [&](const state_type &x, state_type &dxdt, double t) {
+
+                double uin = t > 100 ? 12.5 : 12;
+                double iout = t > 500 ? 0.5 : 1;
+
+                dxdt[0] = (uin - RN*x[0] - x[1])/NL;
+                dxdt[1] = (x[0] - x[2])/NC;
+
+                for (int i = 1; i < N-1; i++) {
+                    const int idx = i*2;
+                    dxdt[idx] = (x[idx - 1] - RN*x[idx] - x[idx+1])/NL;
+                    dxdt[idx+1] = (x[idx] - x[idx+2])/NC;
+                }
+
+                const int lIdx = N*2 - 1;
+                dxdt[lIdx - 1] = (x[lIdx - 2] - RN*x[lIdx - 1] - x[lIdx])/NL;
+                dxdt[lIdx] = (x[lIdx - 1] - iout)/NC;
+                /*
+                dxdt[0] = (U_in[i] - RN*x[0] - x[1] + 1)/NL;
+                dxdt[1] = (x[0] - x[2])/NC;
+
+                for (int i = 1; i < N-1; i++) {
+                    const int idx = i*2;
+                    dxdt[idx] = (x[idx - 1] - RN*x[idx] - x[idx+1])/NL;
+                    dxdt[idx+1] = (x[idx] - x[idx+2])/NC;
+                }
+
+                const int lIdx = N*2 - 1;
+                dxdt[lIdx - 1] = (x[lIdx - 2] - RN*x[lIdx - 1] - x[lIdx])/NL;
+                dxdt[lIdx] = (x[lIdx - 1] - I_out[i])/NC;
+                */
+            },
+            state,
+            t,
+            h
+        );
+        i++;
+    }  while(i < l);
+
+    res.I = I_last;
+    res.U = U_last;
     return res;
 }
 
@@ -162,10 +152,10 @@ Machine::~Machine() {
 
 Machine::Machine(int amount, const RLC& lOptions)
     : opt(lOptions),
-      N(amount)
+    N(amount)
     {
-    RN = lOptions.R/N;
-    NL = lOptions.L/N;
-    NC = lOptions.C/N;
-}
+        RN = lOptions.R/N;
+        NL = lOptions.L/N;
+        NC = lOptions.C/N;
+    }
 
