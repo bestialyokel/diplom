@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "qcustomplot.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -16,6 +17,27 @@ public:
     ~MainWindow();
 
 private:
+    QCustomPlot* inputPlot;
+    QCustomPlot* outputPlot;
+
+    QDoubleSpinBox* resistanceSpinBox;
+    QDoubleSpinBox* inductanceSpinBox;
+    QDoubleSpinBox* capacitySpinBox;
+    QDoubleSpinBox* accuracySpinBox;
+    QDoubleSpinBox* minStepSpinBox;
+    QDoubleSpinBox* maxStepSpinBox;
+    QDoubleSpinBox* lenSpinBox;
+    QDoubleSpinBox* freqSpinBox;
+
+    QLineEdit* bitsLineEdit;
+
+    QPushButton* startButton;
+    QPushButton* stopButton;
+
+    QComboBox* coderComboBox;
     Ui::MainWindow *ui;
+    
+    void initControls();
+    void setOscilatorStylePlot(QCustomPlot* plt);
 };
 #endif // MAINWINDOW_H

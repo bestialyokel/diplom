@@ -7,15 +7,55 @@
 #include "types.h"
 #include "machine.h"
 
-extern int N;
-extern double step;
+void MainWindow::initControls() {
+    inputPlot = findChild<QCustomPlot*>("inputPlot");
+    outputPlot = findChild<QCustomPlot*>("outputPlot");
+
+    resistanceSpinBox = findChild<QDoubleSpinBox*>("rSpinBox");
+    inductanceSpinBox = findChild<QDoubleSpinBox*>("lSpinBox");
+    capacitySpinBox = findChild<QDoubleSpinBox*>("cSpinBox");
+    lenSpinBox = findChild<QDoubleSpinBox*>("lenSpinBox");
+    accuracySpinBox = findChild<QDoubleSpinBox*>("accuracySpinBox");
+    minStepSpinBox = findChild<QDoubleSpinBox*>("minStepSpinBox");
+    maxStepSpinBox = findChild<QDoubleSpinBox*>("maxStepSpinBox");
+    freqSpinBox = findChild<QDoubleSpinBox*>("freqSpinBox");
+
+    bitsLineEdit = findChild<QLineEdit*>("bitsLineEdit");
+
+    startButton = findChild<QPushButton*>("startButton");
+    stopButton = findChild<QPushButton*>("stopButton");
+
+    coderComboBox = findChild<QComboBox*>("codeComboBox");
+}
+
+
+void MainWindow::setOscilatorStylePlot(QCustomPlot *plt) {
+    plt->setBackground( QColor(0,0,0) );
+
+    QColor color(0, 255, 0);
+    QPen pen;
+    pen.setColor(color);
+    pen.setStyle(Qt::PenStyle::DotLine);
+
+    plt->xAxis->grid()->setPen(pen);
+    plt->yAxis->grid()->setPen(pen);
+
+
+    plt->axisRect()->setAutoMargins(QCP::msNone);
+    plt->axisRect()->setMargins(QMargins(-5,0,0,0));
+}
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    initControls();
 
+    setOscilatorStylePlot(inputPlot);
+    setOscilatorStylePlot(outputPlot);
+
+    /*
     double tau = step;
     if (tau == 0) {
         tau = 0.04;
@@ -82,6 +122,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     customPlot->xAxis->setRange(0, T-1);
     customPlot->yAxis->setRange(0,  15);
+    */
 }
 
 MainWindow::~MainWindow()
