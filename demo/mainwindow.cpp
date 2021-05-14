@@ -130,3 +130,13 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
+
+void MainWindow::on_startButton_clicked()
+{
+    exit(0);
+}
+
+void MainWindow::on_stopButton_clicked()
+{
+
+}

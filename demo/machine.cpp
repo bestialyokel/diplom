@@ -67,18 +67,13 @@ void Machine::appendPayload(const Payload& p) {
 
 Payload Machine::processNextPayload() {
     Payload res;
-
     res.tau = pl.tau;
 
-    //initial state for U_in_[i](t=0) I_out_[i](t=0))
     auto [I0, U0] = initState(pl.U[0], pl.I[0]);
 
-    //state[2n] - U_in_[i](t=0)
-    //state[2n+1] - I_out_[i](t=0))
     state_type state = vector<double>(2*N);
     boost::numeric::odeint::runge_kutta4_classic<state_type> rk;
 
-    //fill state
     for (int i = 0; i < N; i++) {
         const int idx = i*2;
         state[idx] = I0[i];
@@ -104,23 +99,11 @@ Payload Machine::processNextPayload() {
         rk.do_step(
             [&](const state_type &x, state_type &dxdt, double t) {
 
-                double uin = t > 100 ? 12.5 : 12;
-                double iout = t > 500 ? 0.5 : 1;
+                double time = (t/h);
 
-                dxdt[0] = (uin - RN*x[0] - x[1])/NL;
-                dxdt[1] = (x[0] - x[2])/NC;
+                size_t i = (size_t)time;
 
-                for (int i = 1; i < N-1; i++) {
-                    const int idx = i*2;
-                    dxdt[idx] = (x[idx - 1] - RN*x[idx] - x[idx+1])/NL;
-                    dxdt[idx+1] = (x[idx] - x[idx+2])/NC;
-                }
-
-                const int lIdx = N*2 - 1;
-                dxdt[lIdx - 1] = (x[lIdx - 2] - RN*x[lIdx - 1] - x[lIdx])/NL;
-                dxdt[lIdx] = (x[lIdx - 1] - iout)/NC;
-                /*
-                dxdt[0] = (U_in[i] - RN*x[0] - x[1] + 1)/NL;
+                dxdt[0] = (U_in[i] - RN*x[0] - x[1])/NL;
                 dxdt[1] = (x[0] - x[2])/NC;
 
                 for (int i = 1; i < N-1; i++) {
@@ -132,7 +115,6 @@ Payload Machine::processNextPayload() {
                 const int lIdx = N*2 - 1;
                 dxdt[lIdx - 1] = (x[lIdx - 2] - RN*x[lIdx - 1] - x[lIdx])/NL;
                 dxdt[lIdx] = (x[lIdx - 1] - I_out[i])/NC;
-                */
             },
             state,
             t,
