@@ -7,11 +7,14 @@
     <x>0</x>
     <y>0</y>
     <width>800</width>
-    <height>600</height>
+    <height>610</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true"/>
   </property>
   <widget class="QWidget" name="mainWidget">
    <widget class="QCustomPlot" name="inputPlot" native="true">
@@ -20,7 +23,7 @@
       <x>10</x>
       <y>10</y>
       <width>781</width>
-      <height>161</height>
+      <height>151</height>
      </rect>
     </property>
     <property name="minimumSize">
@@ -36,8 +39,8 @@
    <widget class="QFrame" name="frame">
     <property name="geometry">
      <rect>
-      <x>20</x>
-      <y>360</y>
+      <x>10</x>
+      <y>330</y>
       <width>151</width>
       <height>191</height>
      </rect>
@@ -154,10 +157,10 @@
    <widget class="QFrame" name="frame_2">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>360</y>
-      <width>261</width>
-      <height>231</height>
+      <x>370</x>
+      <y>330</y>
+      <width>211</width>
+      <height>191</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -171,12 +174,46 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>241</width>
-       <height>210</height>
+       <width>191</width>
+       <height>172</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="6" column="0">
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_14">
+        <property name="text">
+         <string>Точность</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_15">
+        <property name="text">
+         <string>Мин. шаг</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="label_13">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="2">
+       <widget class="QLabel" name="label_10">
+        <property name="text">
+         <string>сек.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
        <widget class="QLabel" name="label_17">
         <property name="text">
          <string>Макс. шаг</string>
@@ -186,8 +223,185 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_11">
+        <property name="text">
+         <string>Параметры моделирования:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
        <widget class="QDoubleSpinBox" name="accuracySpinBox"/>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLabel" name="label_18">
+        <property name="text">
+         <string>сек.</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="1">
+       <widget class="QDoubleSpinBox" name="maxStepSpinBox"/>
+      </item>
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="minStepSpinBox"/>
+      </item>
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_19">
+        <property name="text">
+         <string>Время</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="1">
+       <widget class="QDoubleSpinBox" name="timeSpinBox"/>
+      </item>
+      <item row="5" column="2">
+       <widget class="QLabel" name="label_20">
+        <property name="text">
+         <string>сек.</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QFrame" name="frame_3">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>530</y>
+      <width>571</width>
+      <height>81</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget_3">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>551</width>
+       <height>58</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_3">
+      <item row="2" column="0">
+       <widget class="QLineEdit" name="bitsLineEdit">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_16">
+        <property name="text">
+         <string>Передаваемые биты:</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </widget>
+   <widget class="QCustomPlot" name="outputPlot" native="true">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>160</y>
+      <width>781</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <property name="minimumSize">
+     <size>
+      <width>120</width>
+      <height>0</height>
+     </size>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">border: 1px solid black;</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="loader">
+    <property name="geometry">
+     <rect>
+      <x>650</x>
+      <y>480</y>
+      <width>91</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>16</pointsize>
+     </font>
+    </property>
+    <property name="styleSheet">
+     <string notr="true">max-height: 100;</string>
+    </property>
+    <property name="text">
+     <string/>
+    </property>
+   </widget>
+   <widget class="QFrame" name="frame_4">
+    <property name="geometry">
+     <rect>
+      <x>170</x>
+      <y>330</y>
+      <width>191</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QWidget" name="gridLayoutWidget_4">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>10</y>
+       <width>178</width>
+       <height>172</height>
+      </rect>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_22">
+        <property name="text">
+         <string>V_0</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="2">
+       <widget class="QLabel" name="label_27">
+        <property name="text">
+         <string>В</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0" colspan="3">
+       <widget class="QLabel" name="label_23">
+        <property name="styleSheet">
+         <string notr="true"/>
+        </property>
+        <property name="text">
+         <string>Параметры кодирования:</string>
+        </property>
+       </widget>
       </item>
       <item row="2" column="1" colspan="2">
        <widget class="QComboBox" name="codeComboBox">
@@ -208,37 +422,27 @@
         </item>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_15">
+      <item row="3" column="2">
+       <widget class="QLabel" name="label_28">
         <property name="text">
-         <string>Мин. шаг</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+         <string>В</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="0" colspan="3">
-       <widget class="QLabel" name="label_11">
+      <item row="5" column="2">
+       <widget class="QLabel" name="label_24">
         <property name="text">
-         <string>Параметры моделирования:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="2">
-       <widget class="QLabel" name="label_18">
-        <property name="text">
-         <string>сек.</string>
+         <string>Гц</string>
         </property>
        </widget>
       </item>
       <item row="5" column="1">
-       <widget class="QDoubleSpinBox" name="minStepSpinBox"/>
+       <widget class="QDoubleSpinBox" name="freqSpinBox"/>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_14">
+      <item row="3" column="0">
+       <widget class="QLabel" name="label_25">
         <property name="text">
-         <string>Точность</string>
+         <string>V_step</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -246,7 +450,7 @@
        </widget>
       </item>
       <item row="2" column="0">
-       <widget class="QLabel" name="label_12">
+       <widget class="QLabel" name="label_26">
         <property name="text">
          <string>Кодер</string>
         </property>
@@ -255,25 +459,14 @@
         </property>
        </widget>
       </item>
-      <item row="6" column="1">
-       <widget class="QDoubleSpinBox" name="maxStepSpinBox"/>
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="stepUSpinBox"/>
       </item>
-      <item row="5" column="2">
-       <widget class="QLabel" name="label_10">
-        <property name="text">
-         <string>сек.</string>
-        </property>
-       </widget>
+      <item row="4" column="1">
+       <widget class="QDoubleSpinBox" name="nullUSpinBox"/>
       </item>
-      <item row="4" column="2">
-       <widget class="QLabel" name="label_13">
-        <property name="text">
-         <string/>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0">
-       <widget class="QLabel" name="label_19">
+      <item row="5" column="0">
+       <widget class="QLabel" name="label_21">
         <property name="text">
          <string>Частота</string>
         </property>
@@ -282,104 +475,33 @@
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="freqSpinBox"/>
-      </item>
-      <item row="3" column="2">
-       <widget class="QLabel" name="label_20">
-        <property name="text">
-         <string>Гц.</string>
-        </property>
-       </widget>
-      </item>
      </layout>
     </widget>
    </widget>
-   <widget class="QFrame" name="frame_3">
+   <widget class="QPushButton" name="stopButton">
     <property name="geometry">
      <rect>
-      <x>450</x>
-      <y>360</y>
-      <width>211</width>
-      <height>121</height>
+      <x>700</x>
+      <y>560</y>
+      <width>88</width>
+      <height>34</height>
      </rect>
     </property>
-    <property name="frameShape">
-     <enum>QFrame::StyledPanel</enum>
+    <property name="text">
+     <string>Конец</string>
     </property>
-    <property name="frameShadow">
-     <enum>QFrame::Raised</enum>
-    </property>
-    <widget class="QWidget" name="gridLayoutWidget_3">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>10</y>
-       <width>191</width>
-       <height>61</height>
-      </rect>
-     </property>
-     <layout class="QGridLayout" name="gridLayout_3">
-      <item row="2" column="0">
-       <widget class="QLineEdit" name="bitsLineEdit">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="label_16">
-        <property name="text">
-         <string>Передаваемые биты:</string>
-        </property>
-       </widget>
-      </item>
-     </layout>
-    </widget>
-    <widget class="QPushButton" name="startButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>80</y>
-       <width>88</width>
-       <height>34</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Старт</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="stopButton">
-     <property name="geometry">
-      <rect>
-       <x>110</x>
-       <y>80</y>
-       <width>88</width>
-       <height>34</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Конец</string>
-     </property>
-    </widget>
    </widget>
-   <widget class="QCustomPlot" name="outputPlot" native="true">
+   <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
-      <x>10</x>
-      <y>180</y>
-      <width>781</width>
-      <height>171</height>
+      <x>600</x>
+      <y>560</y>
+      <width>88</width>
+      <height>34</height>
      </rect>
     </property>
-    <property name="minimumSize">
-     <size>
-      <width>120</width>
-      <height>0</height>
-     </size>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">border: 1px solid black;</string>
+    <property name="text">
+     <string>Старт</string>
     </property>
    </widget>
   </widget>
@@ -392,6 +514,22 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
+ <tabstops>
+  <tabstop>rSpinBox</tabstop>
+  <tabstop>lSpinBox</tabstop>
+  <tabstop>cSpinBox</tabstop>
+  <tabstop>lenSpinBox</tabstop>
+  <tabstop>codeComboBox</tabstop>
+  <tabstop>stepUSpinBox</tabstop>
+  <tabstop>nullUSpinBox</tabstop>
+  <tabstop>freqSpinBox</tabstop>
+  <tabstop>accuracySpinBox</tabstop>
+  <tabstop>minStepSpinBox</tabstop>
+  <tabstop>maxStepSpinBox</tabstop>
+  <tabstop>bitsLineEdit</tabstop>
+  <tabstop>startButton</tabstop>
+  <tabstop>stopButton</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

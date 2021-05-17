@@ -6,6 +6,10 @@
 #include <eigen3/Eigen/Dense>
 #include "types.h"
 
+#include <thread>
+#include <stop_token>
+#include <optional>
+#include <atomic>
 
 using namespace std;
 using namespace Eigen;
@@ -26,13 +30,15 @@ class Machine {
     auto f(double Uin, double y, double z);
     auto g(double Iout, double y, double z);
 
-    auto iter( const state_type &x , state_type &dxdt , double t );
+    auto iter(const state_type &x, state_type &dxdt, double t);
 
     public:
 
         void appendPayload(const Payload& p);
 
         Payload processNextPayload();
+
+        optional<Payload> processNextPayloadStoppable(reference_wrapper<atomic_bool> shouldStop);
 
         Machine(int amount, const RLC& lOptions);
         ~Machine();

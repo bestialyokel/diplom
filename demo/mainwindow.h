@@ -3,6 +3,10 @@
 
 #include <QMainWindow>
 #include "qcustomplot.h"
+#include <atomic>
+#include <QVector>
+
+using namespace std;
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,6 +21,7 @@ public:
     ~MainWindow();
 
 private slots:
+
     void on_startButton_clicked();
 
     void on_stopButton_clicked();
@@ -34,6 +39,11 @@ private:
     QDoubleSpinBox* lenSpinBox;
     QDoubleSpinBox* freqSpinBox;
 
+    QDoubleSpinBox* uStepSpinBox;
+    QDoubleSpinBox* uNullSpinBox;
+
+    QDoubleSpinBox* timeSpinBox;
+
     QLineEdit* bitsLineEdit;
 
     QPushButton* startButton;
@@ -41,8 +51,19 @@ private:
 
     QComboBox* coderComboBox;
     Ui::MainWindow *ui;
+
+    QLabel* loader;
     
+    atomic_bool stopped;
+
     void initControls();
+    void setDemonstrationValues();
     void setOscilatorStylePlot(QCustomPlot* plt);
+
+    void clearPlot(QCustomPlot* plt);
+
+    void setLoading(bool);
+
+    void showResult(QCustomPlot* plt, QVector<double> x, QVector<double> y);
 };
 #endif // MAINWINDOW_H

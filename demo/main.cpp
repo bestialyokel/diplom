@@ -9,13 +9,8 @@ int N = 0;
 int main(int argc, char* argv[])
 {
     QApplication app(argc, argv);
-
-    if (argc > 2) {
-        N = atoi(argv[1]);
-        step = atof(argv[2]);
-    }
-
     MainWindow w;
+    //w.layout()->setSizeConstraint(QLayout::SetFixedSize);
     w.show();
     return app.exec();
 
