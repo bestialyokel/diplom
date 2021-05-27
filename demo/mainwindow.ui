@@ -407,7 +407,7 @@
        <widget class="QComboBox" name="codeComboBox">
         <item>
          <property name="text">
-          <string>NRZ</string>
+          <string>MLT-3</string>
          </property>
         </item>
         <item>
@@ -417,7 +417,7 @@
         </item>
         <item>
          <property name="text">
-          <string>Manchester-II</string>
+          <string>Manchester-II 802.3</string>
          </property>
         </item>
        </widget>

@@ -5,6 +5,7 @@
 #include "qcustomplot.h"
 #include <atomic>
 #include <QVector>
+#include "encoder.h"
 
 using namespace std;
 
@@ -25,6 +26,8 @@ private slots:
     void on_startButton_clicked();
 
     void on_stopButton_clicked();
+
+    void on_freqSpinBox_valueChanged(double arg1);
 
 private:
     QCustomPlot* inputPlot;
@@ -63,6 +66,8 @@ private:
     void clearPlot(QCustomPlot* plt);
 
     void setLoading(bool);
+
+    void setControlsProps();
 
     void showResult(QCustomPlot* plt, QVector<double> x, QVector<double> y);
 };
