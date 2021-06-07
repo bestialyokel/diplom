@@ -99,7 +99,7 @@ optional<Payload> Machine::processNextPayloadStoppable(reference_wrapper<atomic_
     do {
         atomic_bool& stop = shouldStop.get();
 
-        if (stop.load()) {
+        if (stop.load(std::memory_order::memory_order_seq_cst)) {
             return nullopt;
         }
 

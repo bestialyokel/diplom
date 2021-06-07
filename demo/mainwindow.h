@@ -69,5 +69,7 @@ private:
     void setControlsProps();
 
     void showResult(QCustomPlot* plt, QVector<double> x, QVector<double> y);
+
+    void setState(int);
 };
 #endif // MAINWINDOW_H

@@ -58,6 +58,7 @@ void MainWindow::setControlsProps() {
     lenSpinBox->setMinimum(1);
 
     bar->setMaximum(100);
+    bar->setVisible(false);
 
     freqSpinBox->setMaximum(std::numeric_limits<double>::max());
     stepSpinBox->setMaximum(1);
@@ -83,11 +84,10 @@ void MainWindow::setDemonstrationValues() {
 
     coderComboBox->setCurrentIndex(1);
 
-    bar->hide();
 }
 
 void MainWindow::setOscilatorStylePlot(QCustomPlot *plt) {
-    plt->setBackground( QColor(0,0,0) );
+    //plt->setBackground( QColor(0,0,0) );
 
     QColor gridColor(255, 255, 255);
     QPen gridPen;
@@ -98,7 +98,11 @@ void MainWindow::setOscilatorStylePlot(QCustomPlot *plt) {
     plt->xAxis->grid()->setPen(gridPen);
     plt->yAxis->grid()->setPen(gridPen);
 
+    plt->xAxis->setLabel("t");
+    plt->yAxis->setLabel("V");
+
     QCPGraph* graph = plt->addGraph();
+
     QColor graphColor(0, 0, 255);
     QPen graphPen;
     graphPen.setWidthF(2);
@@ -111,8 +115,8 @@ void MainWindow::setOscilatorStylePlot(QCustomPlot *plt) {
 
     plt->setInteractions(QCP::iRangeDrag | QCP::iRangeZoom | QCP::iSelectPlottables);
 
-    plt->axisRect()->setAutoMargins(QCP::msNone);
-    plt->axisRect()->setMargins(QMargins(-5,0,0,0));
+    //plt->axisRect()->setAutoMargins(QCP::msNone);
+    //plt->axisRect()->setMargins(QMargins(-5,0,0,0));
 }
 
 MainWindow::MainWindow(QWidget *parent)
@@ -139,11 +143,15 @@ MainWindow::~MainWindow()
 
 void MainWindow::setLoading(bool state) {
     if (state) {
-        bar->show();
+        bar->setVisible(true);
     } else {
-        bar->hide();
+        bar->setVisible(false);
     }
     bar->setValue(0);
+}
+
+void MainWindow::setState(int p) {
+    bar->setValue(p);
 }
 
 void MainWindow::on_startButton_clicked()
@@ -203,8 +211,8 @@ void MainWindow::on_startButton_clicked()
             .U = vector<double>(tCount),
 
         };
-        std::fill(p.I.begin(), p.I.end(), 1.0);
-
+        //std::fill(p.I.begin(), p.I.end(), 1);
+        std::fill(p.I.begin(), p.I.end(), 1);
         for (int i = 0; (i < vals.size()) && (i < tCount); i++) {
             p.U[i] = vals[i];
         }
@@ -220,10 +228,12 @@ void MainWindow::on_startButton_clicked()
         };
 
         Machine m(accuracy, rlc);
-
+        auto obj = this;
         m.appendPayload(p);
-        optional<Payload> lastOpt = m.processNextPayloadStoppable(ref(stopped), [&](int percent) {
-            bar->setValue(percent);
+        optional<Payload> lastOpt = m.processNextPayloadStoppable(ref(stopped), [=](int percent) {
+            QMetaObject::invokeMethod(obj, [=]() {
+                bar->setValue(percent);
+            });
         });
 
         if (!lastOpt.has_value()) {
@@ -279,7 +289,6 @@ void MainWindow::on_stopButton_clicked()
 void MainWindow::on_freqSpinBox_valueChanged(double newValue)
 {
     double step = stepSpinBox->value();
-    //at least 5 dots per *half-tact
     double maxFreq = 1/step;
     if (newValue > maxFreq) {
         freqSpinBox->setValue(maxFreq);
