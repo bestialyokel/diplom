@@ -67,7 +67,7 @@
       <item row="4" column="2">
        <widget class="QLabel" name="label_7">
         <property name="text">
-         <string>Ф</string>
+         <string>Ф/м</string>
         </property>
        </widget>
       </item>
@@ -100,7 +100,7 @@
       <item row="3" column="2">
        <widget class="QLabel" name="label_6">
         <property name="text">
-         <string>Гн</string>
+         <string>Гн/м</string>
         </property>
        </widget>
       </item>
@@ -140,7 +140,7 @@
       <item row="2" column="2">
        <widget class="QLabel" name="label_5">
         <property name="text">
-         <string>Ом</string>
+         <string>Ом/м</string>
         </property>
        </widget>
       </item>
@@ -159,8 +159,8 @@
      <rect>
       <x>370</x>
       <y>330</y>
-      <width>211</width>
-      <height>191</height>
+      <width>201</width>
+      <height>161</height>
      </rect>
     </property>
     <property name="frameShape">
@@ -174,15 +174,25 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>191</width>
-       <height>172</height>
+       <width>182</width>
+       <height>141</height>
       </rect>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="2" column="0">
-       <widget class="QLabel" name="label_14">
+      <item row="3" column="1">
+       <widget class="QDoubleSpinBox" name="stepSpinBox"/>
+      </item>
+      <item row="2" column="2">
+       <widget class="QLabel" name="label_13">
         <property name="text">
-         <string>Точность</string>
+         <string>точек</string>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
+       <widget class="QLabel" name="label_19">
+        <property name="text">
+         <string>Время</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -192,17 +202,10 @@
       <item row="3" column="0">
        <widget class="QLabel" name="label_15">
         <property name="text">
-         <string>Мин. шаг</string>
+         <string>Шаг</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="2" column="2">
-       <widget class="QLabel" name="label_13">
-        <property name="text">
-         <string/>
         </property>
        </widget>
       </item>
@@ -213,16 +216,6 @@
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
-       <widget class="QLabel" name="label_17">
-        <property name="text">
-         <string>Макс. шаг</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0" colspan="3">
        <widget class="QLabel" name="label_11">
         <property name="text">
@@ -230,41 +223,28 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
-       <widget class="QDoubleSpinBox" name="accuracySpinBox"/>
-      </item>
       <item row="4" column="2">
-       <widget class="QLabel" name="label_18">
+       <widget class="QLabel" name="label_20">
         <property name="text">
          <string>сек.</string>
         </property>
        </widget>
       </item>
       <item row="4" column="1">
-       <widget class="QDoubleSpinBox" name="maxStepSpinBox"/>
+       <widget class="QDoubleSpinBox" name="timeSpinBox"/>
       </item>
-      <item row="3" column="1">
-       <widget class="QDoubleSpinBox" name="minStepSpinBox"/>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_19">
+      <item row="2" column="0">
+       <widget class="QLabel" name="label_14">
         <property name="text">
-         <string>Время</string>
+         <string>Точность</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
        </widget>
       </item>
-      <item row="5" column="1">
-       <widget class="QDoubleSpinBox" name="timeSpinBox"/>
-      </item>
-      <item row="5" column="2">
-       <widget class="QLabel" name="label_20">
-        <property name="text">
-         <string>сек.</string>
-        </property>
-       </widget>
+      <item row="2" column="1">
+       <widget class="QSpinBox" name="accuracySpinBox"/>
       </item>
      </layout>
     </widget>
@@ -274,7 +254,7 @@
      <rect>
       <x>10</x>
       <y>530</y>
-      <width>571</width>
+      <width>561</width>
       <height>81</height>
      </rect>
     </property>
@@ -289,7 +269,7 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>551</width>
+       <width>541</width>
        <height>58</height>
       </rect>
      </property>
@@ -330,27 +310,6 @@
      <string notr="true">border: 1px solid black;</string>
     </property>
    </widget>
-   <widget class="QLabel" name="loader">
-    <property name="geometry">
-     <rect>
-      <x>650</x>
-      <y>480</y>
-      <width>91</width>
-      <height>51</height>
-     </rect>
-    </property>
-    <property name="font">
-     <font>
-      <pointsize>16</pointsize>
-     </font>
-    </property>
-    <property name="styleSheet">
-     <string notr="true">max-height: 100;</string>
-    </property>
-    <property name="text">
-     <string/>
-    </property>
-   </widget>
    <widget class="QFrame" name="frame_4">
     <property name="geometry">
      <rect>
@@ -371,7 +330,7 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>178</width>
+       <width>171</width>
        <height>172</height>
       </rect>
      </property>
@@ -403,25 +362,6 @@
         </property>
        </widget>
       </item>
-      <item row="2" column="1" colspan="2">
-       <widget class="QComboBox" name="codeComboBox">
-        <item>
-         <property name="text">
-          <string>MLT-3</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>RZ</string>
-         </property>
-        </item>
-        <item>
-         <property name="text">
-          <string>Manchester-II 802.3</string>
-         </property>
-        </item>
-       </widget>
-      </item>
       <item row="3" column="2">
        <widget class="QLabel" name="label_28">
         <property name="text">
@@ -441,6 +381,9 @@
       </item>
       <item row="3" column="0">
        <widget class="QLabel" name="label_25">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Шаг по напряжения в кодере&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>V_step</string>
         </property>
@@ -467,12 +410,34 @@
       </item>
       <item row="5" column="0">
        <widget class="QLabel" name="label_21">
+        <property name="toolTip">
+         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Частота половины такта&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        </property>
         <property name="text">
          <string>Частота</string>
         </property>
         <property name="alignment">
          <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
         </property>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="2">
+       <widget class="QComboBox" name="codeComboBox">
+        <item>
+         <property name="text">
+          <string>MLT-3</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>RZ</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>Manchester-II 802.3</string>
+         </property>
+        </item>
        </widget>
       </item>
      </layout>
@@ -494,7 +459,7 @@
    <widget class="QPushButton" name="startButton">
     <property name="geometry">
      <rect>
-      <x>600</x>
+      <x>590</x>
       <y>560</y>
       <width>88</width>
       <height>34</height>
@@ -502,6 +467,19 @@
     </property>
     <property name="text">
      <string>Старт</string>
+    </property>
+   </widget>
+   <widget class="QProgressBar" name="progressBar">
+    <property name="geometry">
+     <rect>
+      <x>590</x>
+      <y>520</y>
+      <width>201</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="value">
+     <number>0</number>
     </property>
    </widget>
   </widget>
@@ -523,9 +501,7 @@
   <tabstop>stepUSpinBox</tabstop>
   <tabstop>nullUSpinBox</tabstop>
   <tabstop>freqSpinBox</tabstop>
-  <tabstop>accuracySpinBox</tabstop>
-  <tabstop>minStepSpinBox</tabstop>
-  <tabstop>maxStepSpinBox</tabstop>
+  <tabstop>stepSpinBox</tabstop>
   <tabstop>bitsLineEdit</tabstop>
   <tabstop>startButton</tabstop>
   <tabstop>stopButton</tabstop>

@@ -36,9 +36,8 @@ private:
     QDoubleSpinBox* resistanceSpinBox;
     QDoubleSpinBox* inductanceSpinBox;
     QDoubleSpinBox* capacitySpinBox;
-    QDoubleSpinBox* accuracySpinBox;
-    QDoubleSpinBox* minStepSpinBox;
-    QDoubleSpinBox* maxStepSpinBox;
+    QSpinBox* accuracySpinBox;
+    QDoubleSpinBox* stepSpinBox;
     QDoubleSpinBox* lenSpinBox;
     QDoubleSpinBox* freqSpinBox;
 
@@ -55,7 +54,7 @@ private:
     QComboBox* coderComboBox;
     Ui::MainWindow *ui;
 
-    QLabel* loader;
+    QProgressBar* bar;
     
     atomic_bool stopped;
 

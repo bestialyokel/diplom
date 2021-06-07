@@ -38,7 +38,7 @@ class Machine {
 
         Payload processNextPayload();
 
-        optional<Payload> processNextPayloadStoppable(reference_wrapper<atomic_bool> shouldStop);
+        optional<Payload> processNextPayloadStoppable(reference_wrapper<atomic_bool> shouldStop, function<void(int)> cb);
 
         Machine(int amount, const RLC& lOptions);
         ~Machine();

@@ -8,6 +8,7 @@
 
 #include <boost/array.hpp>
 #include <boost/numeric/odeint.hpp>
+#include <functional>
 
 
 using namespace std;
@@ -65,9 +66,12 @@ void Machine::appendPayload(const Payload& p) {
     pl.U = p.U;
 }
 
-optional<Payload> Machine::processNextPayloadStoppable(reference_wrapper<atomic_bool> shouldStop) {
+optional<Payload> Machine::processNextPayloadStoppable(reference_wrapper<atomic_bool> shouldStop, function<void(int)> cb) {
     Payload res;
     res.tau = pl.tau;
+
+
+    cb(1);
 
     auto [I0, U0] = initState(pl.U[0], pl.I[0]);
 
@@ -91,12 +95,21 @@ optional<Payload> Machine::processNextPayloadStoppable(reference_wrapper<atomic_
 
     size_t i = 0;
     const int lIdx = N*2 - 1;
+    int percent = 1;
     do {
         atomic_bool& stop = shouldStop.get();
 
         if (stop.load()) {
             return nullopt;
         }
+
+        double progress = (i / (double) l) * 100;
+        int p = (int) progress;
+        if (p != percent - 1) {
+            cb(progress);
+            percent = p;
+        }
+
         const double t = i*h;
         I_last[i] = state[lIdx-1];
         U_last[i] = state[lIdx];
