@@ -55,7 +55,9 @@ void MainWindow::setControlsProps() {
     accuracySpinBox->setMaximum(std::numeric_limits<int>::max());
     capacitySpinBox->setMaximum(std::numeric_limits<double>::max());
     lenSpinBox->setMaximum(1000.0);
-    lenSpinBox->setMinimum(1);
+    lenSpinBox->setMinimum(0.0001);
+
+    accuracySpinBox->setMinimum(1);
 
     bar->setMaximum(100);
     bar->setVisible(false);
@@ -153,6 +155,8 @@ void MainWindow::setLoading(bool state) {
 void MainWindow::setState(int p) {
     bar->setValue(p);
 }
+
+std::mutex mt;
 
 void MainWindow::on_startButton_clicked()
 {
@@ -255,18 +259,20 @@ void MainWindow::on_startButton_clicked()
               minU = U[i];
         }
 
-        outputPlot->graph(0)->setData(x, U);
-        outputPlot->xAxis->setRange(0, T);
-        outputPlot->yAxis->setRange(minU*0.99, maxU*1.01);
-        outputPlot->replot();
+        auto inv = QMetaObject::invokeMethod(obj, [=]() {
+            outputPlot->graph(0)->setData(x, U);
+            outputPlot->xAxis->setRange(0, T);
+            outputPlot->yAxis->setRange(minU*0.99, maxU*1.01);
+            outputPlot->replot();
 
-        inputPlot->graph(0)->setData(x, U_in);
-        inputPlot->xAxis->setRange(0, T);
-        inputPlot->yAxis->setRange((uNull-uStep)*0.99 , (uNull+uStep)*1.01);
-        inputPlot->replot();
+            inputPlot->graph(0)->setData(x, U_in);
+            inputPlot->xAxis->setRange(0, T);
+            inputPlot->yAxis->setRange((uNull-uStep)*0.99 , (uNull+uStep)*1.01);
+            inputPlot->replot();
 
-        stopped.store(true);
-        setLoading(false);
+            stopped.store(true);
+            setLoading(false);
+        });
     });
 
     trd.detach();
