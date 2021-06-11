@@ -6,6 +6,7 @@
 #include <atomic>
 #include <QVector>
 #include "encoder.h"
+#include "types.h"
 
 using namespace std;
 
@@ -29,46 +30,34 @@ private slots:
 
     void on_freqSpinBox_valueChanged(double arg1);
 
+    void on_bitsLineEdit_textChanged(const QString &arg1);
+
 private:
-    QCustomPlot* inputPlot;
-    QCustomPlot* outputPlot;
-
-    QDoubleSpinBox* resistanceSpinBox;
-    QDoubleSpinBox* inductanceSpinBox;
-    QDoubleSpinBox* capacitySpinBox;
-    QSpinBox* accuracySpinBox;
-    QDoubleSpinBox* stepSpinBox;
-    QDoubleSpinBox* lenSpinBox;
-    QDoubleSpinBox* freqSpinBox;
-
-    QDoubleSpinBox* uStepSpinBox;
-    QDoubleSpinBox* uNullSpinBox;
-
-    QDoubleSpinBox* timeSpinBox;
-
-    QLineEdit* bitsLineEdit;
-
-    QPushButton* startButton;
-    QPushButton* stopButton;
-
-    QComboBox* coderComboBox;
     Ui::MainWindow *ui;
 
-    QProgressBar* bar;
-    
     atomic_bool stopped;
 
-    void initControls();
-    void setDemonstrationValues();
     void setOscilatorStylePlot(QCustomPlot* plt);
 
     void clearPlot(QCustomPlot* plt);
 
     void setLoading(bool);
 
-    void setControlsProps();
-
     void showResult(QCustomPlot* plt, QVector<double> x, QVector<double> y);
+
+    Payload getPayload(Encoder* enc);
+
+    void dispatchAppState(bool stopped, bool clearPlots);
+
+    void setLoadingPercent(size_t percent);
+
+    void invokeOnWindowThread(function<void()> fun);
+
+    void displayVoltageResult(QCustomPlot* plt, QVector<double> time, vector<double> voltage);
+
+    RLC getRLC();
+
+    Encoder* getEncoder();
 
     void setState(int);
 };
