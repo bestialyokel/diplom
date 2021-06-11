@@ -21,8 +21,17 @@ auto Machine::initState(double U_in, double I_out) {
     MatrixXd A = MatrixXd::Zero(l, l);
     VectorXd b = VectorXd::Zero(l);
 
+    vector<double> I = vector<double>(N);
+    vector<double> U = vector<double>(N);
+
     b(0) = U_in;
     b(l - 1) = I_out;
+
+    if (N == 1) {
+        I[0] = I_out;
+        U[0] = U_in - RN*I_out ;
+        return make_pair(I, U);
+    }
 
     A(0,0) = RN;
     A(0,1) = 1;
@@ -48,9 +57,6 @@ auto Machine::initState(double U_in, double I_out) {
     }
 
     VectorXd x = A.householderQr().solve(b);
-
-    vector<double> I = vector<double>(N);
-    vector<double> U = vector<double>(N);
 
     for (int i = 0; i < N; i++) {
         const int idx = i*2;
@@ -120,6 +126,12 @@ optional<Payload> Machine::processNextPayloadStoppable(reference_wrapper<atomic_
                 double time = (t/h);
 
                 size_t i = (size_t)time;
+
+                if (N == 1) {
+                    dxdt[0] = dxdt[0] = (U_in[i] - RN*x[0] - x[1])/NL;
+                    dxdt[1] = (x[0] - I_out[i])/NC;
+                    return;
+                }
 
                 dxdt[0] = (U_in[i] - RN*x[0] - x[1])/NL;
                 dxdt[1] = (x[0] - x[2])/NC;
