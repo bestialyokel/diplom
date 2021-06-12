@@ -71,6 +71,8 @@ optional<Payload> Machine::processNextPayloadStoppable(Payload& payload, referen
     Payload res;
     res.tau = payload.tau;
 
+    cb(0);
+
     auto [I0, U0] = initState(payload.U[0], payload.I[0]);
 
     state_type state = vector<double>(2*N);

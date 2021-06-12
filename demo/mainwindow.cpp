@@ -80,6 +80,8 @@ Payload MainWindow::getPayload(Encoder* enc) {
     double T = ui->timeSpinBox->value();
     double step = ui->stepSpinBox->value();
     double uNull = ui->nullUSpinBox->value();
+    double R = ui->rSpinBox->value();
+    double len = ui->lenSpinBox->value();
     string bits = ui->bitsLineEdit->text().toStdString();
 
     size_t tCount = (T/step);
@@ -92,7 +94,8 @@ Payload MainWindow::getPayload(Encoder* enc) {
 
     vector<double> vals = enc->encode(bits);
 
-    std::fill(p.I.begin(), p.I.end(), 0);
+    double fullR = (R*len);
+    //std::fill(p.I.begin(), p.I.end(), I_out);
     for (size_t i = 0; (i < vals.size()) && (i < tCount); i++) {
         p.U[i] = vals[i];
     }
@@ -100,6 +103,11 @@ Payload MainWindow::getPayload(Encoder* enc) {
     //padding
     for (size_t i = vals.size(); i < tCount; i++) {
         p.U[i] = uNull;
+    }
+
+    for (size_t i = 0; i < p.U.size(); i++) {
+        //нагрузка
+        p.I[i] = 1;
     }
 
     return std::move(p);
@@ -156,6 +164,8 @@ void MainWindow::dispatchAppState(bool stopped, bool clearPlots) {
 
     ui->progressBar->setVisible(!stopped);
 
+    ui->status->setVisible(!stopped);
+
     if (stopped && clearPlots) {
         clearPlot(ui->inputPlot);
         clearPlot(ui->outputPlot);
@@ -210,6 +220,11 @@ void MainWindow::on_startButton_clicked()
 
         optional<Payload> lastOpt = machine.processNextPayloadStoppable(payload, ref(stopped), [=](size_t percent) {
             invokeOnWindowThread([=]() {
+                if (percent == 0) {
+                    ui->status->setText("Поиск начальных условий..");
+                } else if (percent == 1) {
+                    ui->status->setText("Моделирование..");
+                }
                 setLoadingPercent(percent);
             });
         });
