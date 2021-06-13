@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "stdvector": "cpp",
+        "geometry": "cpp",
+        "dense": "cpp"
+    }
+}
