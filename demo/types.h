@@ -11,12 +11,10 @@ typedef struct {
    double C;
 } RLC;
 
-
 typedef struct {
     double tau;
     vector<double> I;
     vector<double> U;
 } Payload;
-
 
 #endif // TYPES_H

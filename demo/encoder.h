@@ -12,7 +12,6 @@ class Encoder {
         virtual ~Encoder();
 };
 
-
 class RZEncoder : public Encoder {
     private:
         double uPos;
@@ -51,6 +50,5 @@ class ManchesterEncoder : public Encoder {
 
 
 };
-
 
 #endif // ENCODER_H
