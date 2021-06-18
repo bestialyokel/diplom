@@ -1,4 +1,3 @@
-
 #include <array>
 #include <iostream>
 #include <eigen3/Eigen/Dense>
@@ -9,7 +8,6 @@
 #include <boost/array.hpp>
 #include <boost/numeric/odeint.hpp>
 #include <functional>
-
 
 using namespace std;
 using namespace Eigen;

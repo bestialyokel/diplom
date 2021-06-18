@@ -20,7 +20,6 @@ vector<double> RZEncoder::encode(const string &s) {
     return res;
 };
 
-
 vector<double> MLT3Encoder::encode(const string &s) {
     auto res = vector<double>();
     bool isInc = true;
