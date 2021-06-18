@@ -73,7 +73,6 @@ optional<Payload> Machine::processNextPayloadStoppable(Payload& payload, referen
             [&](const state_type &x, state_type &dxdt, double t) {
 
                 double time = (t/h);
-
                 size_t i = (size_t)time;
 
                 if (N == 1) {

@@ -59,7 +59,7 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>131</width>
+       <width>141</width>
        <height>172</height>
       </rect>
      </property>
@@ -74,7 +74,7 @@
       <item row="3" column="1">
        <widget class="QDoubleSpinBox" name="lSpinBox">
         <property name="maximum">
-         <double>500.000000000000000</double>
+         <double>100000.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>0.010000000000000</double>
@@ -107,7 +107,7 @@
          <double>0.010000000000000</double>
         </property>
         <property name="maximum">
-         <double>1000.000000000000000</double>
+         <double>1000000.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>0.500000000000000</double>
@@ -120,7 +120,7 @@
       <item row="4" column="1">
        <widget class="QDoubleSpinBox" name="cSpinBox">
         <property name="maximum">
-         <double>500.000000000000000</double>
+         <double>100000.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>0.010000000000000</double>
@@ -176,7 +176,7 @@
          <double>0.000000000000000</double>
         </property>
         <property name="maximum">
-         <double>500.000000000000000</double>
+         <double>100000.000000000000000</double>
         </property>
         <property name="singleStep">
          <double>0.010000000000000</double>
@@ -415,7 +415,7 @@
       <rect>
        <x>10</x>
        <y>10</y>
-       <width>171</width>
+       <width>181</width>
        <height>172</height>
       </rect>
      </property>
@@ -502,6 +502,9 @@
       </item>
       <item row="3" column="1">
        <widget class="QDoubleSpinBox" name="stepUSpinBox">
+        <property name="maximum">
+         <double>100000.000000000000000</double>
+        </property>
         <property name="singleStep">
          <double>0.500000000000000</double>
         </property>
@@ -512,6 +515,9 @@
       </item>
       <item row="4" column="1">
        <widget class="QDoubleSpinBox" name="nullUSpinBox">
+        <property name="maximum">
+         <double>100000.000000000000000</double>
+        </property>
         <property name="singleStep">
          <double>0.500000000000000</double>
         </property>
